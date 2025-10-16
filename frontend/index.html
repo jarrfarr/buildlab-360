@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BuildLab 360 — Test Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #111; color: #eee; margin: 0; padding: 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .viewer-wrap { background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    model-viewer { width: 100%; height: 70vh; display: block; }
+
+    /* Progress UI */
+    .progress { margin-top: 12px; background: #222; border-radius: 8px; padding: 12px; }
+    .bar { height: 28px; background: #333; border-radius: 6px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg,#0af,#06f); transition: width 100ms linear; }
+    .progress-meta { display:flex; justify-content:space-between; margin-top:8px; font-size:0.95rem; color:#bbb; }
+
+    /* Controls */
+    .controls { display:flex; gap:12px; align-items:center; margin-top:12px; }
+    select, button { padding:8px 12px; border-radius:8px; border: none; background:#222; color:#eee; }
+    .fps { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Test Viewer</h1>
+    <div class="controls">
+      <label for="model-select">Model:</label>
+      <select id="model-select">
+        <option value="/model/model.glb">model.glb</option>
+        <option value="/model/model-large.glb">model-large.glb</option>
+      </select>
+
+      <button id="cache-btn">Download for offline</button>
+
+      <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+        <div class="fps">FPS: <span id="fps">0</span></div>
+      </div>
+    </div>
+
+    <div class="viewer-wrap">
+      <model-viewer id="mv" src="/model/model.glb" alt="3D Model" camera-controls auto-rotate exposure="1" shadow-intensity="1"></model-viewer>
+    </div>
+
+    <div class="progress" aria-hidden="false">
+      <div class="bar" aria-hidden="false"><span id="bar-fill"></span></div>
+      <div class="progress-meta"><div id="progress-text">Waiting to load...</div><div id="progress-percent">0%</div></div>
+    </div>
+  </div>
+
+  <script>
+    const mv = document.getElementById('mv');
+    const barFill = document.getElementById('bar-fill');
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
+    const modelSelect = document.getElementById('model-select');
+    const cacheBtn = document.getElementById('cache-btn');
+    const fpsEl = document.getElementById('fps');
+
+    // Update progress from model-viewer events
+    mv.addEventListener('progress', (e) => {
+      const p = e.detail.totalProgress || 0;
+      const percent = Math.round(p * 100);
+      barFill.style.width = percent + '%';
+      progressPercent.textContent = percent + '%';
+      progressText.textContent = percent < 100 ? 'Loading...' : 'Loaded';
+    });
+
+    // Handle model changes from dropdown
+    modelSelect.addEventListener('change', (e) => {
+      mv.src = e.target.value;
+      // reset progress UI
+      barFill.style.width = '0%';
+      progressPercent.textContent = '0%';
+      progressText.textContent = 'Waiting to load...';
+    });
+
+    // Cache selected model when user clicks
+    cacheBtn.addEventListener('click', async () => {
+      const modelUrl = modelSelect.value;
+      if (!('serviceWorker' in navigator)) {
+        alert('Service worker not supported in this browser');
+        return;
+      }
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        reg.active.postMessage({action: 'cache-url', url: modelUrl});
+        alert('Requested model cache. Stay online while download completes.');
+      } catch (err) {
+        console.error(err);
+        alert('Failed to request caching');
+      }
+    });
+
+    // FPS counter
+    let last = performance.now();
+    let frames = 0;
+    let lastFpsUpdate = performance.now();
+    function raf(now) {
+      frames++;
+      const delta = now - lastFpsUpdate;
+      if (delta >= 500) { // update every 0.5s
+        const fps = Math.round((frames / delta) * 1000);
+        fpsEl.textContent = fps;
+        frames = 0;
+        lastFpsUpdate = now;
+      }
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Register the root service worker so pages are cached
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('✅ Root Service Worker registered from index:', reg.scope))
+          .catch(err => console.error('❌ Root Service Worker registration failed (index):', err));
+      });
+
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'cache-complete') {
+          alert('Model cached: ' + (event.data.url || ''));
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.multiRootWorkspaceName": "buildlab-360"
+    "liveServer.settings.multiRootWorkspaceName": "buildlab-360",
+    "liveServer.settings.port": 5501
 }

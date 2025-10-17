@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>BuildLab 360 — Home</title>
+	<!-- Google Fonts: Arimo for text. BBH Sans Bartle should be installed locally or added to the project if available. -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/frontend/styles.css">
+</head>
+<body>
+	<div class="container">
+		<header class="header">
+			<div class="brand">
+				<div class="logo">BL</div>
+				<div>
+					<div class="site-title">BuildLab 360</div>
+					<div style="font-size:0.85rem;color:var(--muted)">Interactive 3D experiences</div>
+				</div>
+			</div>
+
+			<button class="hamburger" id="hamb">☰</button>
+			<nav class="nav" id="nav">
+				<a href="#" onclick="return false;">Home</a>
+				<a href="/pages/l.html">Viewer</a>
+				<a href="/meta/readme">Docs</a>
+				<a class="cta" href="/pages/viewport.html">Try it</a>
+			</nav>
+		</header>
+
+		<section class="hero">
+			<div class="hero-left">
+				<h1>Welcome to the GBC All-in-One Advanced Building Platform</h1>
+				<p>
+					The purpose of this application is to provide an offline-first, one-stop shop for builders across North America. Our goal is to provide the most up-to-date guides, technical data and installation techniques on various materials such as Huber Zip System, Siga and more.
+				</p>
+				<p>
+					Each material page will include an interactive 3D model that you can view directly on your phone and accompanying documentation, both from the manufacturer and industry professionals covering best practices, installation methods, and more. The app will be fully functional offline, with the ability to download and save models, documents and even videos directly to your device for offline viewing — handy for on-site locations without reliable internet access. The app will be fully open source, funded by manufacturers’ donations and supplemental purchasable content.
+				</p>
+				<div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+					<a class="cta" href="/pages/viewport.html">Open Viewer</a>
+					<a style="padding:8px 12px;border-radius:8px;background:transparent;color:var(--muted);text-decoration:none" href="#features">Features</a>
+				</div>
+			</div>
+
+			<div class="hero-right">
+				<div class="preview">
+					<iframe src="/pages/viewport.html" title="BuildLab 360 Viewer" class="preview-iframe" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+				</div>
+				<div class="features" id="features">
+					<div class="card">
+						<h3>Fast</h3>
+						<p>Streaming, progressive loading with caching support for offline viewing.</p>
+					</div>
+					<div class="card">
+						<h3>Simple</h3>
+						<p>Drop a GLB and the viewer handles controls, lighting and camera for you.</p>
+					</div>
+					<div class="card">
+						<h3>Share</h3>
+						<p>Link directly to models or package them for offline use via the service worker.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer class="footer">
+			<div>© "BuildLab 360" — <span style="color:var(--muted)">Made with model-viewer</span></div>
+			<div style="color:var(--muted)">Version: local</div>
+		</footer>
+	</div>
+
+	<script>
+		// Simple nav toggle for small screens
+		const hamb = document.getElementById('hamb');
+		const nav = document.getElementById('nav');
+		hamb.addEventListener('click', () => nav.classList.toggle('open'));
+	</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BuildLab 360 — Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/styles.css">
+  <link rel="stylesheet" href="/frontend/viewport.css">
+</head>
+<body>
+  <div class="viewer-wrap">
+    <model-viewer id="mv" src="/model/model.glb" alt="3D Model" camera-controls auto-rotate exposure="1" shadow-intensity="1"></model-viewer>
+    <div class="fps-overlay" id="fps-overlay" aria-hidden="true">FPS: <span id="fps-overlay-value">0</span></div>
+  </div>
+
+  <script>
+    // Minimal FPS counter for overlay
+    const fpsOverlayEl = document.getElementById('fps-overlay-value');
+    let lastFpsUpdate = performance.now();
+    let frames = 0;
+    function raf(now) {
+      frames++;
+      const delta = now - lastFpsUpdate;
+      if (delta >= 500) {
+        const fps = Math.round((frames / delta) * 1000);
+        if (fpsOverlayEl) fpsOverlayEl.textContent = fps;
+        frames = 0;
+        lastFpsUpdate = now;
+      }
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  </script>
+</body>
+</html>
+

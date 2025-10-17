@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BuildLab 360 — Hero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/pages/hero.css">
+</head>
+<body>
+  <div class="accent a" aria-hidden></div>
+  <div class="accent b" aria-hidden></div>
+
+  <div class="container">
+    <header class="header" role="banner">
+      <nav class="menu" role="navigation" aria-label="Main">
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <a href="#partners">Partners</a>
+      </nav>
+    </header>
+
+    <main class="hero" role="main">
+      <div class="hero-left">
+        <div class="kicker">All-in-one workflow</div>
+        <h1 class="hero-title">GBC — Products, Data & Simulation in one place</h1>
+        <p class="hero-sub">A single platform to view, annotate, and simulate your product digital twins. From lightweight previews to full GLB scenes, ship interactive 3D experiences that integrate with your data and workflows.</p>
+
+        <div class="cta-row">
+          <button class="btn" id="primary-cta">Try Demo</button>
+          <a class="ghost" href="#learn">Learn more</a>
+        </div>
+
+        <p style="margin-top:18px;color:var(--muted)">Trusted by teams building visual products and digital twins.</p>
+
+      </div>
+
+      <div class="hero-right">
+        <div class="preview-card" id="preview-card">Live Preview</div>
+      </div>
+    </main>
+
+    <section style="margin-top:42px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.04)">
+        <div style="font-weight:800;font-size:1.25rem">Products</div>
+        <div style="color:var(--muted);margin-top:8px">Catalog, BOMs, published GLB previews, and component metadata.</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.04)">
+        <div style="font-weight:800;font-size:1.25rem">About</div>
+        <div style="color:var(--muted);margin-top:8px">Built for engineering and product teams to collaborate on visual assets.</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.04)">
+        <div style="font-weight:800;font-size:1.25rem">Partners</div>
+        <div style="color:var(--muted);margin-top:8px">Integrations and partners to extend digital twin workflows.</div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // small dynamic behavior: CTA wires to open the viewport in a new tab and animate preview
+    document.getElementById('primary-cta').addEventListener('click',function(){
+      // open the slim viewer page in a new tab
+      window.open('/pages/viewport.html','_blank');
+    });
+
+    // animated preview placeholder: cycles through short messages
+    const preview = document.getElementById('preview-card');
+    const frames = ['Live Preview','Model Viewer','Interactive GLB','Simulate & Inspect'];
+    let i = 0;
+    setInterval(()=>{
+      preview.style.opacity = 0; 
+      setTimeout(()=>{ preview.textContent = frames[i++ % frames.length]; preview.style.opacity=1 },230);
+    },2700);
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* Hero landing page styles (pages/hero.css) */
+:root{
+  --bg-1: #fbfdff; /* bright white tint */
+  --bg-2: #eef6ff;
+  --muted: #6b7280;
+  --accent-a: #0ea5e9; /* blue */
+  --accent-b: #2563eb; /* deep blue */
+  --glass: rgba(14,165,233,0.06);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Arimo',system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:#062044;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));}
+.container{max-width:1100px;margin:0 auto;padding:40px 20px}
+.header{display:flex;justify-content:center;align-items:center;padding:18px 0}
+.header .menu{display:flex;gap:28px;align-items:center}
+.header a{color:var(--accent-b);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px}
+.header a:hover{background:var(--glass);transform:translateY(-2px);transition:all 220ms ease}
+
+.hero{display:flex;gap:36px;align-items:center;justify-content:space-between;margin-top:28px}
+.hero-left{flex:1}
+.hero-right{width:420px;display:flex;align-items:center;justify-content:center}
+
+.hero-title{font-size:clamp(2rem,5vw,4rem);line-height:1.02;margin:0;font-weight:800;letter-spacing:-0.02em;background:linear-gradient(90deg,var(--accent-b),var(--accent-a));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;animation:fadeUp 700ms ease both}
+.hero-sub{margin-top:16px;color:var(--muted);font-size:1.05rem;max-width:48ch;animation:fadeUp 700ms 120ms ease both}
+
+.cta-row{margin-top:22px;display:flex;gap:12px;align-items:center}
+.btn{background:linear-gradient(90deg,var(--accent-b),var(--accent-a));color:white;padding:10px 16px;border-radius:10px;border:none;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(37,99,235,0.12);transition:transform 180ms ease}
+.btn:hover{transform:translateY(-3px)}
+.ghost{background:transparent;border:1px solid rgba(4,6,23,0.06);color:var(--accent-b);padding:10px 14px;border-radius:8px}
+
+/* Right preview box */
+.preview-card{width:100%;height:320px;border-radius:12px;background:linear-gradient(180deg,rgba(14,165,233,0.06),rgba(37,99,235,0.02));box-shadow:0 8px 30px rgba(2,6,23,0.06);display:flex;align-items:center;justify-content:center;color:var(--accent-b);font-weight:700}
+
+/* Subtle floating accents */
+.accent{position:absolute;border-radius:50%;filter:blur(18px);opacity:0.18;transform:translate3d(0,0,0)}
+.accent.a{width:220px;height:220px;background:linear-gradient(90deg,var(--accent-b),var(--accent-a));left:4%;top:18%}
+.accent.b{width:120px;height:120px;background:linear-gradient(90deg,#7c5cff,#06b6d4);right:6%;bottom:12%}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+.accent.a{animation:floaty 6s ease-in-out infinite}
+.accent.b{animation:floaty 8s ease-in-out infinite}
+
+/* Responsive */
+@media (max-width:880px){
+  .hero{flex-direction:column-reverse}
+  .hero-right{width:100%}
+  .preview-card{height:240px}
+  .header{padding:12px 0}
+}
+
+/* small utility */
+.kicker{display:inline-block;color:var(--accent-b);font-weight:700;margin-bottom:8px}
+.dynamic-sub{color:var(--accent-b);font-weight:700}

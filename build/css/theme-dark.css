@@ -1,0 +1,27 @@
+[data-theme="dark"] {
+  --bg: #080f16; /* deep navy/blue instead of pure black */
+  --text: #e6eef8;
+  --muted: #bcd3f0;
+  --accent: #4884b4; /* lighter accent for highlights */
+}
+
+/* Make asset cards slightly lighter than page in dark mode */
+[data-theme="dark"] .asset-card {
+  background: #00000000;
+  border-color: rgb(255, 255, 255);
+  box-shadow: 01px 1px 2x rgba(104, 104, 104, 0.7);
+}
+
+/* title badge tweak for dark */
+[data-theme="dark"] .page-header h2 {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.3rem 0.7rem;
+}
+
+/* Improve model-viewer appearance in dark mode */
+[data-theme="dark"] model-viewer {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.6));
+}
+[data-theme="dark"] .media-card .pdf-wrap {
+  border-color: rgba(255, 255, 255, 0.06);
+}

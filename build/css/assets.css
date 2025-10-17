@@ -1,0 +1,83 @@
+/* Asset viewers: PDF, model-viewer, video containers */
+.asset-card {
+  color: var(--text);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem; /* extra breathing room between assets */
+  position: relative;
+}
+
+.media-card .pdf-wrap {
+  width: 100%;
+  height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.pdf-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+model-viewer {
+  width: 100%;
+  height: 420px;
+  background: #f4f6f8;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+}
+.model-card.small model-viewer {
+  height: 500px;
+}
+
+/* Asset card headings: reduce top/bottom spacing and make headings more prominent */
+.asset-card h3 {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+/* FPS overlay for model viewers */
+.fps-overlay {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* container around model-viewer so overlays sit inside the model area */
+.model-wrap {
+  position: relative;
+  display: block;
+}
+
+/* invert overlay background in dark theme */
+[data-theme="dark"] .fps-overlay {
+  background: rgba(0, 0, 0, 0);
+  color: white;
+  border-color: rgba(255, 255, 255, .05);
+}
+
+video {
+  width: 100%;
+  border-radius: 6px;
+  background: black;
+}
+
+/* Dark theme asset overrides will be in theme-dark.css */
+
+@media (max-width: 900px) {
+  model-viewer {
+    height: 300px;
+  }
+}

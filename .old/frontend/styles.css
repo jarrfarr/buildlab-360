@@ -1,0 +1,88 @@
+/* Modern dark landing page styles for BuildLab 360 pages/index.html */
+:root{
+	--bg:#0c0f12;
+	--card:#0f1418;
+	--muted:#9aa3ad;
+	--accent:#6ee7ff;
+	--accent-2:#7c5cff;
+	--glass: rgba(255,255,255,0.04);
+
+	/* Fonts */
+	--font-brand: "BBH Sans Bartle", "BBH Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+	--font-body: 'Arimo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:var(--font-body);color:#e6eef7;background:linear-gradient(180deg,var(--bg),#071018);} 
+.container{max-width:1100px;margin:0 auto;padding:48px 20px}
+.header{display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#041018;font-weight:700;font-size:18px;font-family:var(--font-brand);}
+.site-title{font-size:1.1rem;font-weight:600;font-family:var(--font-brand);}
+.nav{margin-left:auto;display:flex;gap:16px;align-items:center}
+.nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px}
+.nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
+.cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018;padding:8px 12px;border-radius:10px;font-weight:700}
+.hamburger{display:none;border:0;background:transparent;color:var(--muted);font-size:20px}
+
+.hero{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;margin-top:36px}
+.hero-left h1{font-size:2.4rem;margin:0;line-height:1.02}
+.hero-left p{color:var(--muted);margin-top:12px;font-size:1.05rem}
+.hero-right{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+.preview{width:100%;height:320px;border-radius:10px;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
+
+.preview-iframe{width:100%;height:100%;border:0;border-radius:10px;background:transparent}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.card{background:var(--glass);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.card h3{margin:0 0 8px 0}
+.card p{margin:0;color:var(--muted);font-size:0.95rem}
+.footer{margin-top:48px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+/* Mobile */
+@media (max-width:880px){
+	.hero{grid-template-columns:1fr;}
+	.hero-right{order:2}
+	.hamburger{display:block}
+	.nav{position:fixed;right:12px;top:64px;background:#071317;border-radius:12px;padding:8px;flex-direction:column;display:none}
+	.nav.open{display:flex}
+}
+
+/* small tweaks for accessibility */
+a:focus{outline:2px solid rgba(110,231,255,0.2);outline-offset:3px}
+button{cursor:pointer}
+
+
+/* ------------------------------------------------------------------
+	Brand & utility font helpers
+	- .bbh-sans-bartle-regular: explicit class for the BBH brand font
+	- .roboto-<w>: pattern examples below for Roboto weight helpers
+	These helpers use the existing --font-brand and --font-body stacks and
+	are written to render gracefully across desktop/tablet/mobile.
+	------------------------------------------------------------------ */
+
+/* Prefer locally installed BBH Sans Bartle; fall back to the --font-brand stack */
+.bbh-sans-bartle-regular{
+  font-family: "BBH Sans Bartle", var(--font-brand);
+  font-weight:400;
+  font-style:normal;
+  /* Use text rendering optimizations for sharper glyphs at small sizes */
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Roboto utility examples: create one-per-weight classes for convenience.
+	Use font-optical-sizing when available and tuned width/variation settings.
+	Replace <uniquifier> usage with explicit classes like .roboto-400, .roboto-700 */
+.roboto-300{font-family: 'Roboto', var(--font-body);font-weight:300;font-style:normal;font-optical-sizing:auto;font-variation-settings:"wdth" 100}
+.roboto-400{font-family: 'Roboto', var(--font-body);font-weight:400;font-style:normal;font-optical-sizing:auto;font-variation-settings:"wdth" 100}
+.roboto-500{font-family: 'Roboto', var(--font-body);font-weight:500;font-style:normal;font-optical-sizing:auto;font-variation-settings:"wdth" 100}
+.roboto-700{font-family: 'Roboto', var(--font-body);font-weight:700;font-style:normal;font-optical-sizing:auto;font-variation-settings:"wdth" 100}
+
+/* Responsive type rendering tweaks: adjust sizes and load-friendly behavior */
+html{font-size:16px}
+@media (max-width:1200px){html{font-size:15px}}
+@media (max-width:880px){html{font-size:14px}}
+
+/* Optional: soft fallback to system fonts while webfonts load */
+/* Use font-display strategies in @font-face if self-hosting; when using Google
+	fonts we already get a swap-friendly behavior via the request. */
+

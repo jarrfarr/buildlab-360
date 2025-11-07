@@ -1,76 +1,148 @@
-const CACHE_NAME = "buildlab-cache-v1";
-const FILES_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/css/style.css",
-  "/js/main.js",
-  "/pages/home.html",
-  "/pages/preferences.html",
-  "/pages/install.html",
-  "/manifest.json",
-  // local assets we want available offline after first install
-  "/assets/pdfs/sample.pdf",
-  "/assets/models/model.glb",
-  "/assets/videos/sample.mp4"
-  , "/assets/fonts/roboto-300.woff2"
-  , "/assets/fonts/roboto-400.woff2"
-  , "/assets/fonts/roboto-500.woff2"
-  , "/assets/fonts/roboto-700.woff2"
+const CACHE_NAME = "buildlab-cache-v2";
+const MANUAL_CACHE_NAME = "buildlab-manual-cache-v1";
+
+// Core files for minimal offline shell
+const CORE_FILES = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./css/base.css",
+  "./css/style.css",
+  "./css/fonts.css",
+  "./css/theme-light.css",
+  "./css/theme-dark.css",
+  "./js/main.js",
+  "./assets/icon-512.png"
 ];
 
+// Install core files
 self.addEventListener("install", event => {
-  // Pre-cache core resources. Keep failures from runtime/fetch out of install
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(CORE_FILES))
       .then(() => self.skipWaiting())
+      .catch(err => console.error("SW install failed:", err))
   );
 });
 
-// On fetch, respond from cache if available. Otherwise fetch from network and
-// put a copy into the cache (runtime caching). This allows cross-origin
-// resources like the CDN model-viewer script to be cached after first load.
+// Activate and clean old caches
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME && k !== MANUAL_CACHE_NAME)
+            .map(k => caches.delete(k))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+// Fetch handler
 self.addEventListener("fetch", event => {
-  // Only handle GET requests
-  if (event.request.method !== 'GET') return;
+  if (event.request.method !== "GET") return;
 
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-      return fetch(event.request).then(response => {
-        // If response is invalid, just pass it through
-        if (!response || (response.status !== 200 && response.type !== 'opaque')) {
-          return response;
-        }
 
-        // Clone response before caching because response is a stream
+      return fetch(event.request).then(response => {
+        if (!response || response.status !== 200 || response.type === "error")
+          return response;
+
         const responseClone = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          try {
+        const url = new URL(event.request.url);
+        const shouldCache =
+          url.origin === location.origin &&
+          (url.pathname.endsWith(".css") ||
+           url.pathname.endsWith(".js") ||
+           url.pathname.endsWith(".woff") ||
+           url.pathname.endsWith(".woff2") ||
+           url.pathname.endsWith(".png") ||
+           url.pathname.endsWith(".jpg") ||
+           url.pathname.endsWith(".svg") ||
+           url.pathname.endsWith(".glb") ||
+           url.pathname.endsWith(".mp4") ||
+           url.pathname.endsWith(".pdf"));
+
+        if (shouldCache) {
+          caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseClone);
-          } catch (err) {
-            // Ignore cache put failures (quota, opaque responses etc.)
-            console.warn('Cache put failed for', event.request.url, err);
-          }
-        });
+          });
+        }
 
         return response;
       }).catch(() => {
-        // Network failed: optionally return a fallback for navigations
-        // For navigation requests, try to return the cached index.html
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+        if (event.request.mode === "navigate") {
+          return caches.match("./index.html");
         }
-        return new Response(null, { status: 504, statusText: 'Gateway Timeout' });
+        return new Response("Offline - resource not available", {
+          status: 503,
+          statusText: "Service Unavailable"
+        });
       });
     })
   );
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-      .then(() => self.clients.claim())
-    )
-  );
+// Listen for custom messages from client pages
+self.addEventListener("message", event => {
+  if (!event.data || !event.data.type) return;
+
+  switch (event.data.type) {
+    case "CACHE_URLS":
+      event.waitUntil(
+        cacheUrls(event.data.urls).then(result => {
+          event.ports[0].postMessage({ success: true, result });
+        }).catch(err => {
+          event.ports[0].postMessage({ success: false, error: err.message });
+        })
+      );
+      break;
+
+    case "GET_CACHE_SIZE":
+      event.waitUntil(
+        getCacheSize().then(size => {
+          event.ports[0].postMessage({ success: true, size });
+        })
+      );
+      break;
+  }
 });
+
+// --- Helpers ---
+async function cacheUrls(urls) {
+  const cache = await caches.open(MANUAL_CACHE_NAME);
+  const results = { success: [], failed: [] };
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        await cache.put(url, res);
+        results.success.push(url);
+      } else {
+        results.failed.push({ url, reason: `HTTP ${res.status}` });
+      }
+    } catch (e) {
+      results.failed.push({ url, reason: e.message });
+    }
+  }
+  return results;
+}
+
+async function getCacheSize() {
+  const cacheNames = await caches.keys();
+  let total = 0;
+  for (const name of cacheNames) {
+    const cache = await caches.open(name);
+    const keys = await cache.keys();
+    for (const req of keys) {
+      const res = await cache.match(req);
+      if (res) {
+        const blob = await res.clone().blob();
+        total += blob.size;
+      }
+    }
+  }
+  return total;
+}

@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>base template</title>
+    <title>Siga Majvest 200 - BuildLab 360</title>
     <link rel="stylesheet" href="../css/style.css" />
-    <!-- model-viewer web component (CDN) - lightweight and commonly used -->
-    <script
-      type="module"
-      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-    ></script>
-    <!-- PDF.js to read PDF page dimensions so we can size the container to the PDF's aspect ratio -->
+    <link rel="stylesheet" href="../css/cache-ui.css" />
+
+    <!-- model-viewer -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+    <!-- Cache + SW -->
+    <script defer src="../js/cache-manager.js"></script>
     <script defer src="../js/main.js"></script>
   </head>
   <body>
     <header>
       <h1>BuildLab 360</h1>
       <nav>
-      <nav>
         <a href="../index.html">Home</a>
-        <a href="./pages/siga-majvest_200.html">Siga Majvest 200</a>
+        <a href="siga-majvest_200.html">Siga Majvest 200</a>
       </nav>
     </header>
 
@@ -28,73 +29,66 @@
       <div class="page-layout">
         <div class="content">
           <header class="page-header">
-            <h2>Product Install Guide</h2>
+            <h2>Majvest® 200</h2>
             <p class="lead">
-              Step-by-step resources, interactive models, and multimedia to help
-              you install and inspect your product.
+              Diffusion-open, wind and rainproof facade membrane for permanent protection of the exterior wall and maintaining the functionality of the thermal insulation.
             </p>
+            <div class="page-header-actions">
+              <button class="cache-page-btn" data-page-url="../pages/siga-majvest_200.html">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 2V10M8 10L5 7M8 10L11 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12V13C2 13.5304 2.21071 14.0391 2.58579 14.4142C2.96086 14.7893 3.46957 15 4 15H12C12.5304 15 13.0391 14.7893 13.4142 14.4142C13.7893 14.0391 14 13.5304 14 13V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Download for Offline</span>
+              </button>
+              <span class="cache-status" id="online-status">
+                <span class="cache-status-dot"></span>
+                <span>Online</span>
+              </span>
+            </div>
           </header>
 
           <section id="links">
             <h3>Manufacturer Links</h3>
             <ul>
-              <li>
-                <a
-                  href="https://www.examplemfg.com/product-a"
-                  target="_blank"
-                  rel="noopener"
-                  >Example Mfg - Product A</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://www.examplemfg.com/product-b"
-                  target="_blank"
-                  rel="noopener"
-                  >Example Mfg - Product B</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://www.examplemfg.com/support"
-                  target="_blank"
-                  rel="noopener"
-                  >Manufacturer Support</a
-                >
-              </li>
+              <li><a href="https://www.examplemfg.com/product-a" target="_blank" rel="noopener">Example Mfg - Product A</a></li>
+              <li><a href="https://www.examplemfg.com/product-b" target="_blank" rel="noopener">Example Mfg - Product B</a></li>
+              <li><a href="https://www.examplemfg.com/support" target="_blank" rel="noopener">Manufacturer Support</a></li>
             </ul>
+          </section>
+
+          <section id="model1" class="asset-card model-card">
+            <h3>Siga Majvest 200</h3>
+            <p>Siga Majvest 200 is a mechanically attached membrane serving as both WRB and air barrier...</p>
+            <h3>Storage</h3>
+            <p>Store in original packaging in a cool, dry location.</p>
+            <h3>Detailing</h3>
+            <p>Detail transitions properly between assemblies and seal with Wigluv 60 and Fentrim 430...</p>
+          </section>
+
+          <section id="model1" class="asset-card model-card">
+            <h3>3D Model Preview</h3>
+            <model-viewer
+              src="../assets/models/wall.glb"
+              alt="Majvest 200 Model"
+              ar
+              camera-controls
+              auto-rotate
+            ></model-viewer>
           </section>
 
           <section id="pdf" class="asset-card media-card">
             <h3>Installation PDF</h3>
             <div class="pdf-wrap">
-              <iframe
-                src="../assets/pdfs/sample.pdf"
-                title="Install PDF"
-              ></iframe>
+              <iframe src="../assets/pdfs/siga-majvest_200-system_guidlines.pdf" title="Install PDF"></iframe>
             </div>
-          </section>
-
-          <section id="model1" class="asset-card model-card">
-            <h3>3D Model Preview</h3>
-            <p class="muted">
-              Rotate and inspect the model — pinch on touch devices.
-            </p>
-            <model-viewer
-              src="../assets/models/model.glb"
-              alt="Sample Model"
-              ar
-              ios-src="../assets/models/model.glb"
-              camera-controls
-              auto-rotate
-            ></model-viewer>
           </section>
 
           <section id="model2" class="asset-card model-card small">
             <h3>Alternate View</h3>
             <model-viewer
               src="../assets/models/model.glb"
-              alt="Sample Model 2"
+              alt="Alternate Model View"
               camera-controls
               exposure="1"
             ></model-viewer>
@@ -122,48 +116,30 @@
       </div>
 
       <script>
-        // Smooth scroll for anchors and active link highlighting
+        // Sidebar + smooth scroll
         (function () {
           const nav = document.querySelector(".sidebar");
-          const links = nav ? Array.from(nav.querySelectorAll("a")) : [];
-          const sections = links.map((a) =>
-            document.getElementById(a.getAttribute("href").slice(1))
-          );
-
+          const links = Array.from(nav.querySelectorAll("a"));
+          const sections = links.map(a => document.getElementById(a.getAttribute("href").slice(1)));
           function onScroll() {
-            const y = window.scrollY + 120; // offset for header
-            let activeIndex = -1;
-            sections.forEach((sec, i) => {
-              if (!sec) return;
-              if (sec.offsetTop <= y) activeIndex = i;
-            });
-            links.forEach((a, i) =>
-              a.classList.toggle("active", i === activeIndex)
-            );
+            const y = window.scrollY + 120;
+            let active = -1;
+            sections.forEach((sec, i) => { if (sec && sec.offsetTop <= y) active = i; });
+            links.forEach((a, i) => a.classList.toggle("active", i === active));
           }
-
           window.addEventListener("scroll", onScroll, { passive: true });
           onScroll();
-
-          // Smooth scrolling
-          links.forEach((a) => {
-            a.addEventListener("click", (e) => {
-              e.preventDefault();
-              const id = a.getAttribute("href").slice(1);
-              const el = document.getElementById(id);
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-            });
-          });
-
-          // Sidebar toggle for small screens
+          links.forEach(a => a.addEventListener("click", e => {
+            e.preventDefault();
+            const el = document.getElementById(a.getAttribute("href").slice(1));
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }));
           const toggle = document.querySelector(".sidebar-toggle");
           if (toggle) {
             toggle.addEventListener("click", () => {
               const expanded = toggle.getAttribute("aria-expanded") === "true";
               toggle.setAttribute("aria-expanded", String(!expanded));
-              document
-                .querySelector(".sidebar")
-                .classList.toggle("open", !expanded);
+              document.querySelector(".sidebar").classList.toggle("open", !expanded);
             });
           }
         })();

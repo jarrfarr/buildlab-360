@@ -48,15 +48,6 @@
             </div>
           </header>
 
-          <section id="links">
-            <h3>Manufacturer Links</h3>
-            <ul>
-              <li><a href="https://www.examplemfg.com/product-a" target="_blank" rel="noopener">Example Mfg - Product A</a></li>
-              <li><a href="https://www.examplemfg.com/product-b" target="_blank" rel="noopener">Example Mfg - Product B</a></li>
-              <li><a href="https://www.examplemfg.com/support" target="_blank" rel="noopener">Manufacturer Support</a></li>
-            </ul>
-          </section>
-
           <section id="model1" class="asset-card model-card">
             <h3>Siga Majvest 200</h3>
             <p>Siga Majvest 200 is a mechanically attached membrane serving as both WRB and air barrier...</p>
@@ -84,13 +75,14 @@
             </div>
           </section>
 
-          <section id="model2" class="asset-card model-card small">
-            <h3>Alternate View</h3>
+          <section id="model1" class="asset-card model-card">
+            <h3>3D Model Preview</h3>
             <model-viewer
               src="../assets/models/model.glb"
-              alt="Alternate Model View"
+              alt="Majvest 200 Model"
+              ar
               camera-controls
-              exposure="1"
+              auto-rotate
             ></model-viewer>
           </section>
 
@@ -102,18 +94,6 @@
             </video>
           </section>
         </div>
-
-        <nav class="sidebar" aria-label="Install sections">
-          <button class="sidebar-toggle" aria-expanded="true">Contents</button>
-          <ul>
-            <li><a href="#links">Links</a></li>
-            <li><a href="#pdf">PDF</a></li>
-            <li><a href="#model1">3D Model</a></li>
-            <li><a href="#model2">Alternate View</a></li>
-            <li><a href="#video">Video</a></li>
-          </ul>
-        </nav>
-      </div>
 
       <script>
         // Sidebar + smooth scroll
